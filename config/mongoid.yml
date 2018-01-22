@@ -1,0 +1,11 @@
+production:
+  clients:
+    default:
+      database: highfivebot
+      hosts:
+        - localhost:27017
+      options:
+        connect_timeout: 300
+        wait_queue_timeout: 300
+  options:
+    raise_not_found_error: false

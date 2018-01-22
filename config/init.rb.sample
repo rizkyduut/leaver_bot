@@ -1,0 +1,6 @@
+$telegram_bot_token = 'your_bot_token'
+redis = Redis.new(thread_safe: true)
+$redis = Redis::Namespace.new(:leaver_bot, redis: redis)
+
+$super_admin_username = 'asuperadmin'
+$bot_username = 'abotusername'
