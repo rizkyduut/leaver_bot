@@ -4,3 +4,4 @@ $redis = Redis::Namespace.new(:leaver_bot, redis: redis)
 
 $super_admin_username = 'asuperadmin'
 $bot_username = 'abotusername'
+$group_id = 'agroupid'

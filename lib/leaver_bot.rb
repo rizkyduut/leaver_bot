@@ -10,6 +10,7 @@ class LeaverBot
       end
     end
   rescue StandardError => e
+    puts e.message
     retry
   end
 end

@@ -1,7 +1,7 @@
 production:
   clients:
     default:
-      database: highfivebot
+      database: leaverbot
       hosts:
         - localhost:27017
       options:
