@@ -6,10 +6,10 @@ class LeaverBot::User
   field :first_name,  type: String
   field :last_name,   type: String
   field :username,    type: String
-  field :squad,       type: Integer
   field :active,      type: Boolean, default: true
+  field :group_list,  type: Array, default: []
 
-  has_many :squad, class_name: 'LeaverBot::Squad', inverse_of: :user
-
-
+  index({ created_at: 1 }, { background: true })
+  index({ user_id: 1 },    { background: true })
+  index({ username: 1 },   { background: true })
 end
