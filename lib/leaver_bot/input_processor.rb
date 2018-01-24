@@ -35,12 +35,12 @@ class LeaverBot::InputProcessor
     elsif text == '/status'
       if group = get_group(message.chat.id)
         if usernames = group.user_list
-          replies = {}
+          replies = []
           usernames.each do |username|
-            replies[username] = check_leave(username)
+            replies.push(check_leave(username))
           end
 
-          reply(message, replies.map { |username, rep| "#{username}: #{rep}" }.join("\n"))
+          reply_status(message, replies)
         else
           reply(message, 'Belum ada user yang didaftarkan dalam group ini')
         end
@@ -122,6 +122,16 @@ class LeaverBot::InputProcessor
 
   def reply(message, text)
     send(chat_id: message.chat.id, text: text, reply_to_message_id: message.message_id)
+  end
+
+  def reply_status(message, replies)
+    puts replies
+    unless replies.all?(&:nil?)
+      replies.unshift('Berikut daftar yang tidak hadir hari ini:')
+      reply(message, replies.compact.join("\n"))
+    else
+      reply(message, 'Semua hadir hari ini. Yeay!')
+    end
   end
 
   def send(options = {})
