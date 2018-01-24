@@ -32,15 +32,21 @@ class LeaverBot::InputProcessor
       else
         reply(message, 'Group tidak ditemukan')
       end
-    elsif text =~ /^\/reset +(.+)$/
-      key = $1
-      LeaverBot::Leave.delete(key)
-      reply(message, 'Berhasil menghapus cache')
-    elsif text =~ /^\/cache +(.+)$/
-      key = $1
-      reply(message, LeaverBot::Leave.cache(key))
-    elsif text == '/keys'
-      reply(message, LeaverBot::Leave.key)
+    elsif text == '/status'
+      if group = get_group(message.chat.id)
+        if usernames = group.user_list
+          replies = {}
+          usernames.each do |username|
+            replies[username] = check_leave(username)
+          end
+
+          reply(message, replies.map { |username, rep| "#{username}: #{rep}" }.join("\n"))
+        else
+          reply(message, 'Belum ada user yang didaftarkan dalam group ini')
+        end
+      else
+        reply(message, 'Group ini belum didaftarkan')
+      end
     elsif in_private?(message)
       if text =~ /^\/leave +([0-9]+)$/
         days = $1.to_i
@@ -52,6 +58,17 @@ class LeaverBot::InputProcessor
         add_leave(message, days, 'remote')
 
         reply(message, 'Remote berhasil didaftarkan')
+      elsif text =~ /^\/reset +(.+)$/
+        key = $1
+        LeaverBot::Leave.delete(key)
+        reply(message, 'Berhasil menghapus cache')
+      elsif text =~ /^\/cache +(.+)$/
+        key = $1
+        reply(message, LeaverBot::Leave.cache(key))
+      elsif text == '/keys'
+        reply(message, LeaverBot::Leave.key)
+      else
+        reply(message, 'wow')
       end
     else
       reply(message, 'wow')
@@ -67,9 +84,9 @@ class LeaverBot::InputProcessor
   def register_group(message, group_name)
     begin
       LeaverBot::Group.create!(group_id: message.chat.id, name: group_name.downcase)
-      'Grup ini berhasil didaftarkan dalam sistem'
+      'Group ini berhasil didaftarkan dalam sistem'
     rescue
-      'Grup ini sudah terdaftar sebelumnya'
+      'Group ini sudah terdaftar sebelumnya'
     end
   end
 
@@ -77,9 +94,13 @@ class LeaverBot::InputProcessor
     LeaverBot::Group.find_by(name: /^#{group_name}$/i)
   end
 
+  def get_group(group_id)
+    LeaverBot::Group.find_by(group_id: group_id)
+  end
+
   def register_user(username, group)
     if LeaverBot::User.where(username: /^#{username}$/i, group_list: group.name).first
-      "Sudah terdaftar di grup #{group.name} sebelumnya"
+      "Sudah terdaftar di group #{group.name} sebelumnya"
     elsif user = LeaverBot::User.where(username: /^#{username}$/i).first
       user.add_to_set(group_list: group.name)
       group.add_to_set(user_list: username)
@@ -92,7 +113,11 @@ class LeaverBot::InputProcessor
   end
 
   def add_leave(message, duration, type)
-    LeaverBot::Leave.add_leave(message, duration, type)
+    LeaverBot::Leave.add(message, duration, type)
+  end
+
+  def check_leave(username)
+    LeaverBot::Leave.check(username)
   end
 
   def reply(message, text)

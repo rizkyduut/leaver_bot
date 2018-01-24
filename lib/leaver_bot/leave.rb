@@ -2,13 +2,24 @@ class LeaverBot::Leave
   LEAVE_KEY = 'LEAVE-'
   REMOTE_KEY = 'REMOTE-'
 
-  def self.add_leave(message, duration, type)
+  def self.add(message, duration, type)
     duration.times do |d|
       key = generate_key(Date.today.next_day(d), type)
       expireat = Date.today.next_day(2).to_time.to_i
 
       $redis.sadd(key, message.from.username)
       $redis.expireat(key, expireat)
+    end
+  end
+
+  def self.check(username)
+    leave_key = generate_key(Date.today, 'leave')
+    remote_key = generate_key(Date.today, 'remote')
+
+    if $redis.sismember(leave_key, username)
+      'Cuti hari ini'
+    elsif $redis.sismember(remote_key, username)
+      'Remote hari ini'
     end
   end
 
