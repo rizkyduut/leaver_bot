@@ -9,9 +9,6 @@ class LeaverBot::InputProcessor
 
     return unless message
 
-    # enables the bot only for private chats (chat id positive) and main group
-    #return unless message.chat.id > 0 || in_group?(message)
-
     # ignores edited messages
     return if message.edit_date
 
@@ -35,6 +32,27 @@ class LeaverBot::InputProcessor
       else
         reply(message, 'Group tidak ditemukan')
       end
+    elsif text =~ /^\/reset +(.+)$/
+      key = $1
+      LeaverBot::Leave.delete(key)
+      reply(message, 'Berhasil menghapus cache')
+    elsif text =~ /^\/cache +(.+)$/
+      key = $1
+      reply(message, LeaverBot::Leave.cache(key))
+    elsif text == '/keys'
+      reply(message, LeaverBot::Leave.key)
+    elsif in_private?(message)
+      if text =~ /^\/leave +([0-9]+)$/
+        days = $1.to_i
+        add_leave(message, days, 'leave')
+
+        reply(message, 'Cuti berhasil didaftarkan')
+      elsif text =~ /^\/remote +([0-9]+)$/
+        days = $1.to_i
+        add_leave(message, days, 'remote')
+
+        reply(message, 'Remote berhasil didaftarkan')
+      end
     else
       reply(message, 'wow')
     end
@@ -42,8 +60,8 @@ class LeaverBot::InputProcessor
 
   private
 
-  def in_group?(message)
-    message.chat.id == $group_id
+  def in_private?(message)
+    message.chat.type == 'private'
   end
 
   def register_group(message, group_name)
@@ -64,12 +82,17 @@ class LeaverBot::InputProcessor
       "Sudah terdaftar di grup #{group.name} sebelumnya"
     elsif user = LeaverBot::User.where(username: /^#{username}$/i).first
       user.add_to_set(group_list: group.name)
+      group.add_to_set(user_list: username)
       'Berhasil didaftarkan ke dalam group'
     else
       new_user = LeaverBot::User.create!(username: username, group_list: [group.name])
       group.add_to_set(user_list: username)
       'Berhasil didaftarkan dalam sistem'
     end
+  end
+
+  def add_leave(message, duration, type)
+    LeaverBot::Leave.add_leave(message, duration, type)
   end
 
   def reply(message, text)

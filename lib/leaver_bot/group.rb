@@ -6,6 +6,7 @@ class LeaverBot::Group
   field :name,  type: String
   field :user_list,   type: Array, default: []
 
+  validates :group_id, uniqueness: true
   validates :name, uniqueness: true, case_sensitive: false
 
   index({ created_at: 1 }, { background: true })
