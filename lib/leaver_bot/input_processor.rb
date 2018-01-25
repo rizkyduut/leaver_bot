@@ -17,6 +17,21 @@ class LeaverBot::InputProcessor
 
     text = message.text.sub("@#{$bot_username}", '')
 
+    #admin flow
+    if text.starts_with?('/sudo ') && (super_admin?(message) || admin?(message))
+      if text =~ /reset +(.+)$/
+        key = $1
+        LeaverBot::Leave.delete(key)
+        reply(message, 'Berhasil menghapus cache')
+      elsif text =~ /cache +(.+)$/
+        key = $1
+        reply(message, LeaverBot::Leave.cache(key))
+      elsif text =~ /keys +(.+)$/
+        reply(message, LeaverBot::Leave.key)
+      end
+    end
+
+    #normal flow
     if text =~ /^\/register_group +(.+)$/
       reply(message, register_group(message, $1))
     elsif text =~ /^\/register +((?:@?[A-Za-z0-9_]{5,} *)+) +(.+)$/
@@ -58,24 +73,15 @@ class LeaverBot::InputProcessor
         add_leave(message, days, 'remote')
 
         reply(message, 'Remote berhasil didaftarkan')
-      elsif text =~ /^\/reset +(.+)$/
-        key = $1
-        LeaverBot::Leave.delete(key)
-        reply(message, 'Berhasil menghapus cache')
-      elsif text =~ /^\/cache +(.+)$/
-        key = $1
-        reply(message, LeaverBot::Leave.cache(key))
-      elsif text == '/keys'
-        reply(message, LeaverBot::Leave.key)
-      else
-        reply(message, 'wow')
       end
-    else
-      reply(message, 'wow')
     end
   end
 
   private
+
+  def super_admin?(message)
+    message.from.username == $super_admin_username
+  end
 
   def in_private?(message)
     message.chat.type == 'private'
@@ -125,7 +131,6 @@ class LeaverBot::InputProcessor
   end
 
   def reply_status(message, replies)
-    puts replies
     unless replies.all?(&:nil?)
       replies.unshift('Berikut daftar yang tidak hadir hari ini:')
       reply(message, replies.compact.join("\n"))

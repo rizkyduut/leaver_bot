@@ -17,9 +17,9 @@ class LeaverBot::Leave
     remote_key = generate_key(Date.today, 'remote')
 
     if $redis.sismember(leave_key, username)
-      "#{username} cuti hari ini"
+      "#{username} - cuti"
     elsif $redis.sismember(remote_key, username)
-      "@#{username} remote hari ini"
+      "@#{username} - remote"
     else
       nil
     end
