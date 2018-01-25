@@ -25,6 +25,16 @@ class LeaverBot::Leave
     end
   end
 
+  def self.remove(message, duration)
+    duration.times do |d|
+      leave_key = generate_key(Date.today.next_day(d), 'leave')
+      remote_key = generate_key(Date.today.next_day(d), 'remote')
+
+      $redis.srem(leave_key, message.from.username)
+      $redis.srem(remote_key, message.from.username)
+    end
+  end
+
   def self.delete(key)
     $redis.del(key)
   end

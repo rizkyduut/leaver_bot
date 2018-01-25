@@ -26,15 +26,13 @@ class LeaverBot::InputProcessor
       elsif text =~ /cache +(.+)$/
         key = $1
         reply(message, LeaverBot::Leave.cache(key))
-      elsif text =~ /keys +(.+)$/
+      elsif text =~ /keys/
         reply(message, LeaverBot::Leave.key)
       end
     end
 
     #normal flow
-    if text =~ /^\/register_group +(.+)$/
-      reply(message, register_group(message, $1))
-    elsif text =~ /^\/register +((?:@?[A-Za-z0-9_]{5,} *)+) +(.+)$/
+    if text =~ /^\/add +((?:@?[A-Za-z0-9_]{5,} *)+) +(.+)$/
       group_name = $2
       usernames = $1.split.map{ |u| u.sub('@', '') }
       if group = registered_group?(group_name)
@@ -47,20 +45,24 @@ class LeaverBot::InputProcessor
       else
         reply(message, 'Group tidak ditemukan')
       end
-    elsif text == '/status'
-      if group = get_group(message.chat.id)
-        if usernames = group.user_list
-          replies = []
-          usernames.each do |username|
-            replies.push(check_leave(username))
-          end
+    elsif !in_private?(message)
+      if text =~ /^\/add_group +(.+)$/
+        reply(message, register_group(message, $1))
+      elsif text == '/status'
+        if group = get_group(message.chat.id)
+          if usernames = group.user_list
+            replies = []
+            usernames.each do |username|
+              replies.push(check_leave(username))
+            end
 
-          reply_status(message, replies)
+            reply_status(message, replies)
+          else
+            reply(message, 'Belum ada user yang didaftarkan dalam group ini')
+          end
         else
-          reply(message, 'Belum ada user yang didaftarkan dalam group ini')
+          reply(message, 'Group ini belum didaftarkan')
         end
-      else
-        reply(message, 'Group ini belum didaftarkan')
       end
     elsif in_private?(message)
       if text =~ /^\/leave +([0-9]+)$/
@@ -73,6 +75,11 @@ class LeaverBot::InputProcessor
         add_leave(message, days, 'remote')
 
         reply(message, 'Remote berhasil didaftarkan')
+      elsif text =~ /^\/remove +([0-9]+)$/
+        days = $1.to_i
+        remove_leave(message, days)
+
+        reply(message, 'Data cuti/remote berhasil dihapus')
       end
     end
   end
@@ -124,6 +131,10 @@ class LeaverBot::InputProcessor
 
   def check_leave(username)
     LeaverBot::Leave.check(username)
+  end
+
+  def remove_leave(message, duration)
+    LeaverBot::Leave.remove(message, duration)
   end
 
   def reply(message, text)
