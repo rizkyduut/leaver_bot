@@ -3,6 +3,7 @@ require 'redis'
 require 'redis-namespace'
 require 'sucker_punch'
 require 'mongoid'
+require 'mongoid-locker'
 require 'telegram/bot'
 
 def reload!

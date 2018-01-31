@@ -48,7 +48,7 @@ class LeaverBot::InputProcessor
     elsif !in_private?(message)
       if text =~ /^\/add_group +(.+)$/
         reply(message, register_group(message, $1))
-      elsif text == '/status'
+      elsif text =~ /^\/status/
         if group = get_group(message.chat.id)
           if usernames = group.user_list
             replies = []
@@ -64,7 +64,7 @@ class LeaverBot::InputProcessor
           reply(message, 'Group ini belum didaftarkan')
         end
       end
-    elsif in_private?(message)
+    elsif registered_user?(message.from) && in_private?(message)
       if text =~ /^\/leave +([0-9]+)$/
         days = $1.to_i
         add_leave(message, days, 'leave')
@@ -123,6 +123,10 @@ class LeaverBot::InputProcessor
       group.add_to_set(user_list: username)
       'Berhasil didaftarkan dalam sistem'
     end
+  end
+
+  def registered_user?(tg_user)
+    LeaverBot::User.get(tg_user)
   end
 
   def add_leave(message, duration, type)

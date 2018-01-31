@@ -12,4 +12,6 @@ class LeaverBot::Group
   index({ created_at: 1 }, { background: true })
   index({ group_id: 1 },    { background: true })
   index({ name: 1 },   { background: true })
+
+  default_scope -> { order_by(created_at: :asc) }
 end
