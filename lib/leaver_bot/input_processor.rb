@@ -69,17 +69,25 @@ class LeaverBot::InputProcessor
         days = $1.to_i
         add_leave(message, days, 'leave')
 
-        reply(message, 'Cuti berhasil didaftarkan')
+        if days == 1
+          reply(message, 'Cuti untuk hari ini berhasil didaftarkan')
+        else
+          reply(message, "Cuti sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil didaftarkan")
+        end
       elsif text =~ /^\/remote +([0-9]+)$/
         days = $1.to_i
         add_leave(message, days, 'remote')
 
-        reply(message, 'Remote berhasil didaftarkan')
+        if days == 1
+          reply(message, 'Remote untuk hari ini berhasil didaftarkan')
+        else
+          reply(message, "Remote sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil didaftarkan")
+        end
       elsif text =~ /^\/remove +([0-9]+)$/
         days = $1.to_i
         remove_leave(message, days)
 
-        reply(message, 'Data cuti/remote berhasil dihapus')
+        reply(message, "Data cuti/remote sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil dihapus")
       end
     end
   end
