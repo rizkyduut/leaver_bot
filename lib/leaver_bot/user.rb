@@ -23,6 +23,7 @@ class LeaverBot::User
 
   def self.get_and_update(tg_user)
     res = self.active.find_by(user_id: tg_user.id)
+    LeaverBot::Group.update_group(res.username, tg_user.username) if res&.username?
     res ||= self.active.where(username: /^#{tg_user.username}$/i).first
 
     if res

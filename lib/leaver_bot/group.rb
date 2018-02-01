@@ -1,6 +1,7 @@
 class LeaverBot::Group
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Locker
 
   field :group_id,    type: Integer
   field :name,  type: String
@@ -14,4 +15,15 @@ class LeaverBot::Group
   index({ name: 1 },   { background: true })
 
   default_scope -> { order_by(created_at: :asc) }
+
+  def self.update_group(old_username, new_username)
+    return if old_username.eql?(new_username)
+
+    self.where(user_list: old_username).each do |group|
+      group.with_lock(wait: true) do
+        group.user_list.map! { |user| user == old_username ? new_username : user }
+        group.save if group.changed?
+      end
+    end
+  end
 end
