@@ -63,31 +63,45 @@ class LeaverBot::InputProcessor
         else
           reply(message, 'Group ini belum didaftarkan')
         end
+      elsif text =~ /^\/help/
+        reply(message, 'Japri aja ya')
       end
-    elsif registered_user?(message.from) && in_private?(message)
-      if text =~ /^\/leave +([0-9]+)$/
-        days = $1.to_i
-        add_leave(message, days, 'leave')
+    elsif in_private?(message)
+      if text =~ /^\/help/
+        reply(message, LeaverBot::Message.help_text)
+      elsif text =~ /^\/leave/
+        reply(message, LeaverBot::Message.leave_text('leave'))
+      elsif text =~ /^\/remote/
+        reply(message, LeaverBot::Message.leave_text('remote'))
+      elsif text =~ /^\/reset/
+        reply(message, LeaverBot::Message.reset_text)
+      elsif registered_user?(message.from)
+        if text =~ /^\/leave +([0-9]+)$/
+          days = $1.to_i
+          add_leave(message, days, 'leave')
 
-        if days == 1
-          reply(message, 'Cuti untuk hari ini berhasil didaftarkan')
-        else
-          reply(message, "Cuti sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil didaftarkan")
+          if days == 1
+            reply(message, 'Cuti untuk hari ini berhasil didaftarkan')
+          else
+            reply(message, "Cuti sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil didaftarkan")
+          end
+        elsif text =~ /^\/remote +([0-9]+)$/
+          days = $1.to_i
+          add_leave(message, days, 'remote')
+
+          if days == 1
+            reply(message, 'Remote untuk hari ini berhasil didaftarkan')
+          else
+            reply(message, "Remote sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil didaftarkan")
+          end
+        elsif text =~ /^\/reset +([0-9]+)$/
+          days = $1.to_i
+          remove_leave(message, days)
+
+          reply(message, "Data cuti/remote sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil dihapus")
         end
-      elsif text =~ /^\/remote +([0-9]+)$/
-        days = $1.to_i
-        add_leave(message, days, 'remote')
-
-        if days == 1
-          reply(message, 'Remote untuk hari ini berhasil didaftarkan')
-        else
-          reply(message, "Remote sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil didaftarkan")
-        end
-      elsif text =~ /^\/remove +([0-9]+)$/
-        days = $1.to_i
-        remove_leave(message, days)
-
-        reply(message, "Data cuti/remote sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil dihapus")
+      elsif !registered_user?(message.from)
+        reply(message, 'Kamu belum terdaftar')
       end
     end
   end
