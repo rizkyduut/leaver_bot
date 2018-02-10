@@ -5,10 +5,9 @@ class LeaverBot::Leave
   def self.add(message, duration, type)
     duration.times do |d|
       key = generate_key(Date.today.next_day(d), type)
-      expireat = Date.today.next_day(2).to_time.to_i
 
       $redis.sadd(key, message.from.username)
-      $redis.expireat(key, expireat)
+      $redis.expire(key, 172800) # 2 days
     end
   end
 
