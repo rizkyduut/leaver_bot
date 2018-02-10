@@ -52,7 +52,9 @@ class LeaverBot::InputProcessor
       if text =~ /^\/add_group +(.+)$/
         reply(message, register_group(message, $1))
       elsif text =~ /^\/status/
-        if group = get_group(message.chat.id)
+        if Date.today.saturday? || Date.today.sunday?
+          reply(message, 'Liburan gih sana')
+        elsif group = get_group(message.chat.id)
           if usernames = group.user_list
             replies = []
             usernames.each do |username|
@@ -83,6 +85,7 @@ class LeaverBot::InputProcessor
       elsif registered_user?(message.from)
         if text =~ /^\/leave +([0-9]+)$/
           days = $1.to_i
+          return if days <= 0
           add_leave(message, days, 'leave')
 
           if days == 1
@@ -92,6 +95,7 @@ class LeaverBot::InputProcessor
           end
         elsif text =~ /^\/remote +([0-9]+)$/
           days = $1.to_i
+          return if days <= 0
           add_leave(message, days, 'remote')
 
           if days == 1
@@ -101,6 +105,7 @@ class LeaverBot::InputProcessor
           end
         elsif text =~ /^\/reset +([0-9]+)$/
           days = $1.to_i
+          return if days <= 0
           remove_leave(message, days)
 
           reply(message, "Data cuti/remote sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil dihapus")
