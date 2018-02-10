@@ -69,12 +69,14 @@ class LeaverBot::InputProcessor
     elsif in_private?(message)
       if text =~ /^\/help/
         reply(message, LeaverBot::Message.help_text)
-      elsif text =~ /^\/leave/
+      elsif text == '/leave'
         reply(message, LeaverBot::Message.leave_text('leave'))
-      elsif text =~ /^\/remote/
+      elsif text == '/remote'
         reply(message, LeaverBot::Message.leave_text('remote'))
-      elsif text =~ /^\/reset/
+      elsif text == '/reset'
         reply(message, LeaverBot::Message.reset_text)
+      elsif text == '/reminder'
+        reply(message, LeaverBot::Message.reminder_text)
       elsif registered_user?(message.from)
         if text =~ /^\/leave +([0-9]+)$/
           days = $1.to_i
@@ -99,9 +101,13 @@ class LeaverBot::InputProcessor
           remove_leave(message, days)
 
           reply(message, "Data cuti/remote sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil dihapus")
+        elsif text =~ /^\/status/
+          reply(message, 'COMING SOON')
         end
       elsif !registered_user?(message.from)
-        reply(message, 'Kamu belum terdaftar')
+        if text =~ /^\/status/
+          reply(message, LeaverBot::Message.status_text)
+        end
       end
     end
   end

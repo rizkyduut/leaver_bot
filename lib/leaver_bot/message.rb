@@ -30,5 +30,17 @@ class LeaverBot::Message
       msg << 'Mirip sama leave/remote tapi ini menghapus <b>semua</b> data sebanyak jumlah hari ke depan'
       msg.join("\n")
     end
+
+    def status_text
+      msg = []
+      msg << 'COMING SOON'
+      msg.join("\n")
+    end
+
+    def reminder_text
+      msg = []
+      msg << 'COMING SOON'
+      msg.join("\n")
+    end
   end
 end
