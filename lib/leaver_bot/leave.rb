@@ -1,36 +1,36 @@
 class LeaverBot::Leave
-  LEAVE_KEY = 'LEAVE-'
-  REMOTE_KEY = 'REMOTE-'
+  LEAVE_TYPE_KEY = 'leave_type'.freeze
 
-  def self.add(message, duration, type)
+  def self.add(username, duration, type)
     duration.times do |d|
-      key = generate_key(Date.today.next_day(d), type)
+      key = generate_key(Date.today.next_day(d))
 
-      $redis.sadd(key, message.from.username)
+      $redis.sadd(key, username)
       $redis.expire(key, 172800) # 2 days
+      $redis.hset(LEAVE_TYPE_KEY, username, type)
     end
   end
 
   def self.check(username)
-    leave_key = generate_key(Date.today, 'leave')
-    remote_key = generate_key(Date.today, 'remote')
+    key = generate_key(Date.today)
 
-    if $redis.sismember(leave_key, username)
+    return nil unless $redis.sismember(key, username)
+
+    if $redis.hget(LEAVE_TYPE_KEY, username) == 'leave'
       "#{username} - cuti"
-    elsif $redis.sismember(remote_key, username)
+    elsif $redis.hget(LEAVE_TYPE_KEY, username) == 'remote'
       "@#{username} - remote"
     else
       nil
     end
   end
 
-  def self.remove(message, duration)
+  def self.remove(username, duration)
     duration.times do |d|
-      leave_key = generate_key(Date.today.next_day(d), 'leave')
-      remote_key = generate_key(Date.today.next_day(d), 'remote')
+      key = generate_key(Date.today.next_day(d))
 
-      $redis.srem(leave_key, message.from.username)
-      $redis.srem(remote_key, message.from.username)
+      $redis.srem(key, username)
+      $redis.hdel(LEAVE_TYPE_KEY, username)
     end
   end
 
@@ -46,13 +46,13 @@ class LeaverBot::Leave
     $redis.smembers(key).join(", ")
   end
 
+  def self.cache_type(username)
+    $redis.hget(LEAVE_TYPE_KEY, username)
+  end
+
   private
 
-  def self.generate_key(date, type)
-    if type == 'leave'
-      LEAVE_KEY + date.strftime("%Y%m%d")
-    elsif type == 'remote'
-      REMOTE_KEY + date.strftime("%Y%m%d")
-    end
+  def self.generate_key(date)
+    date.strftime("%Y%m%d")
   end
 end

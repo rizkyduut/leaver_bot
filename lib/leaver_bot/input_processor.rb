@@ -26,6 +26,9 @@ class LeaverBot::InputProcessor
       elsif text =~ /cache +(.+)$/
         key = $1
         reply(message, LeaverBot::Leave.cache(key))
+      elsif text =~ /cachetype +(.+)$/
+        username = $1
+        reply(message, LeaverBot::Leave.cache_type(username))
       elsif text =~ /keys/
         reply(message, LeaverBot::Leave.key)
       end
@@ -158,7 +161,7 @@ class LeaverBot::InputProcessor
   end
 
   def add_leave(message, duration, type)
-    LeaverBot::Leave.add(message, duration, type)
+    LeaverBot::Leave.add(message.from.username, duration, type)
   end
 
   def check_leave(username)
@@ -166,7 +169,7 @@ class LeaverBot::InputProcessor
   end
 
   def remove_leave(message, duration)
-    LeaverBot::Leave.remove(message, duration)
+    LeaverBot::Leave.remove(message.from.username, duration)
   end
 
   def reply(message, text)
