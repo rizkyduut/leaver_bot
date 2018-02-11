@@ -17,8 +17,8 @@ class LeaverBot::User
   default_scope -> { order_by(created_at: :asc) }
   scope :active, -> { where(active: true) }
 
-  def self.get(tg_user)
-    self.get_and_update(tg_user)
+  def self.get(username)
+    self.active.find_by(username: username)
   end
 
   def self.get_and_update(tg_user)

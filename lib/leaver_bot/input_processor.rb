@@ -111,6 +111,16 @@ class LeaverBot::InputProcessor
           reply(message, "Data cuti/remote sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil dihapus")
         elsif text =~ /^\/status/
           reply(message, 'COMING SOON')
+        elsif text =~ /^\/reminder ([yn])$/
+          state = $1
+
+          if state == 'y'
+            LeaverBot::Reminder.add(message.from.username)
+            reply(message, 'Reminder berhasil diaktifkan')
+          else
+            LeaverBot::Reminder.remove(message.from.username)
+            reply(message, 'Reminder berhasil dinonaktifkan')
+          end
         end
       elsif !registered_user?(message.from)
         if text =~ /^\/status/
@@ -162,7 +172,7 @@ class LeaverBot::InputProcessor
   end
 
   def registered_user?(tg_user)
-    LeaverBot::User.get(tg_user)
+    LeaverBot::User.get_and_update(tg_user)
   end
 
   def add_leave(message, duration, type)

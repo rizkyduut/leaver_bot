@@ -22,6 +22,10 @@ namespace :leaver_bot do
   task start: :reload do
     LeaverBot.start
   end
+
+  task remind: :reload do
+    LeaverBot::Reminder.start
+  end
 end
 
 task default: 'leaver_bot:start'

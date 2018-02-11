@@ -13,6 +13,8 @@ class LeaverBot::Message
       msg << 'Untuk melihat siapa saja yang tidak hadir dapat menggunakan /status di dalam group tersebut'
       msg << ''
       msg << 'Bagaimana cara input data ketidakhadirannya? Username yang telah didaftarkan tadi bisa langsung japri ke sini dengan /leave /remote /reset /status'
+      msg << ''
+      msg << 'Suka lupa input data? pake /reminder aja'
       msg.join("\n")
     end
 
@@ -39,7 +41,9 @@ class LeaverBot::Message
 
     def reminder_text
       msg = []
-      msg << 'COMING SOON'
+      msg << '<code>/reminder [y/n]</code>'
+      msg << "<b>/reminder y</b> untuk mengaktifkan fitur reminder yang akan dikirim setiap jam 6 pagi"
+      msg << "<b>/reminder n</b> untuk menonaktifkan fitur reminder"
       msg.join("\n")
     end
   end
