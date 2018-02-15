@@ -18,7 +18,11 @@ class LeaverBot::Snack
 
   belongs_to :group, class_name: "LeaverBot::Group", inverse_of: :snack
 
+  HOLIDAY_KEY = 'holiday'.freeze
+
   def self.daily_snack
+    return if $redis.get(HOLIDAY_KEY) == 'y'
+
     Telegram::Bot::Client.run($telegram_bot_token) do |bot|
       snack_groups = all.to_a
       snack_groups.each do |group|

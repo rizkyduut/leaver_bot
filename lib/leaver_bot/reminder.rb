@@ -1,10 +1,10 @@
 class LeaverBot::Reminder
   REMINDER_LIST_KEY = 'reminder_list'.freeze
-  DEFAULT_MESSAGE_OPTIONS = {
-    parse_mode: 'HTML'
-  }.freeze
+  HOLIDAY_KEY = 'holiday'.freeze
 
   def self.start
+    return if $redis.get(HOLIDAY_KEY) == 'y'
+
     options = {
       text: 'Hai, hari ini masuk gak? kalo nggak kabarin ya~',
       parse_mode: 'HTML'

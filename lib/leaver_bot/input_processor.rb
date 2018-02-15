@@ -2,6 +2,8 @@ class LeaverBot::InputProcessor
   include SuckerPunch::Job
   workers 5
 
+  HOLIDAY_KEY = 'holiday'.freeze
+
   attr_accessor :bot
 
   def perform(message, bot)
@@ -31,6 +33,11 @@ class LeaverBot::InputProcessor
         reply(message, LeaverBot::Leave.cache_type(username))
       elsif text =~ /keys/
         reply(message, LeaverBot::Leave.key)
+      elsif text =~ /holiday ([yn])$/
+        state = $1
+        $redis.set(HOLIDAY_KEY, state)
+
+        reply(message, state == 'y' ? 'Libur' : 'Masuk')
       end
     end
 
@@ -64,7 +71,7 @@ class LeaverBot::InputProcessor
       if text =~ /^\/add_group +(.+)$/
         reply(message, register_group(message, $1))
       elsif text =~ /^\/status/
-        if Date.today.saturday? || Date.today.sunday?
+        if Date.today.saturday? || Date.today.sunday? || $redis.get(HOLIDAY_KEY) == 'y'
           reply(message, 'Liburan gih sana')
         elsif group = get_group(message.chat.id)
           if usernames = group.user_list
@@ -81,7 +88,7 @@ class LeaverBot::InputProcessor
           reply(message, 'Group ini belum didaftarkan')
         end
       elsif text =~ /^\/snack/
-        if Date.today.saturday? || Date.today.sunday?
+        if Date.today.saturday? || Date.today.sunday? || $redis.get(HOLIDAY_KEY) == 'y'
           reply(message, 'Liburan gih sana')
         elsif group = get_group(message.chat.id)
           usernames = group.snack.today
