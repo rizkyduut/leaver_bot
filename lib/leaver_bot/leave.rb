@@ -11,7 +11,7 @@ class LeaverBot::Leave
     end
   end
 
-  def self.check(username)
+  def self.check_status(username)
     key = generate_key(Date.today)
 
     return nil unless $redis.sismember(key, username)
@@ -23,6 +23,12 @@ class LeaverBot::Leave
     else
       nil
     end
+  end
+
+  def self.check_leave(username)
+    key = generate_key(Date.today)
+
+    $redis.sismember(key, username)
   end
 
   def self.remove(username, duration)

@@ -16,6 +16,8 @@ class LeaverBot::Group
 
   default_scope -> { order_by(created_at: :asc) }
 
+  has_one :snack, class_name: "LeaverBot::Snack", inverse_of: :group
+
   def self.update_group(old_username, new_username)
     return if old_username.eql?(new_username)
 

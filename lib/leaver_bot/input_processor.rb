@@ -48,6 +48,18 @@ class LeaverBot::InputProcessor
       else
         reply(message, 'Group tidak ditemukan')
       end
+    elsif text =~ /^\/add_snack +((?:@[A-Za-z0-9_]{5,} *)+) (.+) (.+)$$/
+      group_name = $2
+      day = $3
+      usernames = $1.split.map { |u| u.sub('@', '') }
+
+      if group = registered_group?(group_name)
+        add_snack(group, usernames, day)
+
+        reply(message, "#{usernames.join(', ')} berhasil didaftarkan untuk hari #{day}")
+      else
+        reply(message, 'Group ini belum didaftarkan')
+      end
     elsif !in_private?(message)
       if text =~ /^\/add_group +(.+)$/
         reply(message, register_group(message, $1))
@@ -58,13 +70,28 @@ class LeaverBot::InputProcessor
           if usernames = group.user_list
             replies = []
             usernames.each do |username|
-              replies.push(check_leave(username))
+              replies.push(check_status(username))
             end
 
             reply_status(message, replies)
           else
             reply(message, 'Belum ada user yang didaftarkan dalam group ini')
           end
+        else
+          reply(message, 'Group ini belum didaftarkan')
+        end
+      elsif text =~ /^\/snack/
+        if Date.today.saturday? || Date.today.sunday?
+          reply(message, 'Liburan gih sana')
+        elsif group = get_group(message.chat.id)
+          usernames = group.snack.today
+          replies = []
+
+          usernames.each do |username|
+            replies.push("@#{username}") unless check_leave(username)
+          end
+
+          reply(message, "Jangan lupa jajan ya hari ini #{replies.join(', ')}") if replies.present?
         else
           reply(message, 'Group ini belum didaftarkan')
         end
@@ -179,12 +206,20 @@ class LeaverBot::InputProcessor
     LeaverBot::Leave.add(message.from.username, duration, type)
   end
 
+  def check_status(username)
+    LeaverBot::Leave.check_status(username)
+  end
+
   def check_leave(username)
-    LeaverBot::Leave.check(username)
+    LeaverBot::Leave.check_leave(username)
   end
 
   def remove_leave(message, duration)
     LeaverBot::Leave.remove(message.from.username, duration)
+  end
+
+  def add_snack(group, usernames, day)
+    LeaverBot::Snack.add(group, usernames, day)
   end
 
   def reply(message, text)

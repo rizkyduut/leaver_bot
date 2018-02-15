@@ -22,3 +22,7 @@
 every :weekday, at: '6am' do
   rake 'leaver_bot:remind'
 end
+
+every :weekday, at: '10am' do
+  rake 'leaver_bot:daily_snack'
+end
