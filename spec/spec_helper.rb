@@ -1,8 +1,11 @@
-ENV['ENV'] = 'test'
-
-load 'Rakefile'
-Rake::Task['leaver_bot:reload'].execute
-
 require 'rspec'
+require 'dotenv/load'
+require 'sucker_punch'
+require 'mongoid'
+require 'mongoid-locker'
 
-Dir['spec/support/**/*.rb'].each { |f| require File.expand_path(f) }
+require 'leaver_bot'
+
+Mongoid.load!(File.join(File.dirname(__FILE__), '..', 'config', 'mongoid.yml'), :test)
+
+#Dir['spec/support/**/*.rb'].each { |f| require File.expand_path(f) }
