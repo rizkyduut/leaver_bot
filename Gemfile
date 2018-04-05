@@ -8,3 +8,10 @@ gem 'mongoid'
 gem 'mongoid-locker'
 gem 'telegram-bot-ruby'
 gem 'whenever', require: false
+gem 'dotenv'
+
+group :test do
+  gem 'factory_bot'
+  gem 'rspec'
+  gem 'database_cleaner'
+end

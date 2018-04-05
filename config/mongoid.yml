@@ -3,7 +3,29 @@ production:
     default:
       database: leaverbot
       hosts:
-        - localhost:27017
+        - 127.0.0.1:27017
+      options:
+        connect_timeout: 300
+        wait_queue_timeout: 300
+  options:
+    raise_not_found_error: false
+development:
+  clients:
+    default:
+      database: leaverbot_development
+      hosts:
+        - 127.0.0.1:27017
+      options:
+        connect_timeout: 300
+        wait_queue_timeout: 300
+  options:
+    raise_not_found_error: false
+test:
+  clients:
+    default:
+      database: leaverbot_test
+      hosts:
+        - 127.0.0.1:27017
       options:
         connect_timeout: 300
         wait_queue_timeout: 300
