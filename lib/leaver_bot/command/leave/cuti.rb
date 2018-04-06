@@ -9,7 +9,7 @@ module LeaverBot
         end
 
         def perform
-          super('Cuti')
+          super('cuti')
         end
       end
     end

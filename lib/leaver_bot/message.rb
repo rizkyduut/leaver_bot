@@ -13,7 +13,7 @@ module LeaverBot
         msg << ''
         msg << 'Untuk melihat siapa saja yang tidak hadir dapat menggunakan /status di dalam group tersebut'
         msg << ''
-        msg << 'Bagaimana cara input data ketidakhadirannya? Username yang telah didaftarkan tadi bisa langsung japri ke sini dengan /cuti /remote /reset /status'
+        msg << 'Bagaimana cara input data ketidakhadirannya? Username yang telah didaftarkan tadi bisa langsung japri ke sini dengan /cuti /sakit /remote /reset /status'
         msg << ''
         msg << 'Suka lupa input data? pake /reminder aja'
         msg.join("\n")
@@ -22,8 +22,8 @@ module LeaverBot
       def leave_text(type)
         msg = []
         msg << "<code>/#{type} [jumlah hari terhitung hari ini]</code>"
-        msg << "Contoh: <b>/#{type} 1</b> untuk mendaftarkan cuti/remote hari ini saja"
-        msg << "<b>/#{type} 6</b> untuk mendaftarkan cuti/remote sebanyak 6 hari (sabtu minggu dihitung)"
+        msg << "Contoh: <b>/#{type} 1</b> untuk mendaftarkan data #{type} hari ini saja"
+        msg << "<b>/#{type} 6</b> untuk mendaftarkan data #{type} sebanyak 6 hari (sabtu minggu dihitung)"
         msg.join("\n")
       end
 

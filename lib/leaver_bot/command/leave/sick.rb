@@ -1,15 +1,15 @@
 module LeaverBot
   class Command
     class Leave
-      class Remote < Leave
-        COMMAND_REGEX = /^\/remote/
+      class Sick < Leave
+        COMMAND_REGEX = /^\/sakit/
 
         def self.matches(text)
           text =~ COMMAND_REGEX
         end
 
         def perform
-          super('remote')
+          super('sakit')
         end
       end
     end

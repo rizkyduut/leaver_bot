@@ -21,6 +21,8 @@ module LeaverBot
 
       if $redis.hget(LEAVE_TYPE_KEY, username) == 'cuti'
         "#{username} - cuti"
+      elsif $redis.hget(LEAVE_TYPE_KEY, username) == 'sakit'
+        "#{username} - sakit"
       elsif $redis.hget(LEAVE_TYPE_KEY, username) == 'remote'
         "@#{username} - remote"
       else

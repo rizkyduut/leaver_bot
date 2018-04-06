@@ -21,6 +21,7 @@ require 'leaver_bot/command/status/snack'
 
 require 'leaver_bot/command/leave'
 require 'leaver_bot/command/leave/cuti'
+require 'leaver_bot/command/leave/sick'
 require 'leaver_bot/command/leave/remote'
 require 'leaver_bot/command/leave/reset'
 
@@ -36,7 +37,7 @@ module LeaverBot
         User::Add,
         Snack::Add,
         Status::Leave, Status::Snack,
-        Leave::Cuti, Leave::Remote, Leave::Reset,
+        Leave::Cuti, Leave::Sick, Leave::Remote, Leave::Reset,
         Help, Reminder,
         Dump
       ]

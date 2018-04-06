@@ -10,9 +10,9 @@ module LeaverBot
       def perform(type)
         if in_private?
           if registered_user?
-            return unless days_valid?(type.downcase)
+            return unless days_valid?(type)
 
-            type == 'Reset' ? remove_leave : add_leave(type)
+            type == 'reset' ? remove_leave : add_leave(type)
           else
             reply('Kamu belum terdaftar')
           end
@@ -25,9 +25,9 @@ module LeaverBot
         LeaverBot::Leave.add(@message.from.username, days, type.downcase)
 
         if days == 1
-          reply("#{type} untuk hari ini berhasil didaftarkan")
+          reply("Data #{type} untuk hari ini berhasil didaftarkan")
         else
-          reply("#{type} sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil didaftarkan")
+          reply("Data #{type} sampai tanggal #{Date.today.next_day(days-1).strftime("%d-%m-%Y")} berhasil didaftarkan")
         end
       end
 
