@@ -13,6 +13,7 @@ require 'leaver_bot/model/reminder'
 module LeaverBot
   REMINDER_LIST_KEY = 'reminder_list'.freeze
   HOLIDAY_KEY = 'holiday'.freeze
+  @log = Logger.new(File.dirname(__FILE__) + "/log/#{Date.today.strftime("%Y-%m")}.log")
 
   def self.perform
     Telegram::Bot::Client.run($telegram_bot_token) do |bot|
@@ -25,7 +26,7 @@ module LeaverBot
     sleep(2)
     retry
   rescue StandardError => e
-    puts e.inspect
+    @log.error e.inspect
     retry
   end
 
@@ -68,5 +69,9 @@ module LeaverBot
         end
       end
     end
+  end
+
+  def self.logger
+    @log
   end
 end

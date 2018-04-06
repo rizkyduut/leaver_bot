@@ -8,8 +8,7 @@ module LeaverBot
       return if message.edit_date
       return unless message.text
 
-      message.text = message.text.sub("@#{$bot_username}", '')
-      LeaverBot::User.get_and_update(message.from)
+      before_action(message)
       cmd = Command
         .actions
         .find { |command| command.matches(message.text) }
@@ -19,7 +18,18 @@ module LeaverBot
         cmd.perform
       rescue LeaverBot::Error => e
         cmd.reply(e.message)
+        LeaverBot.logger.error("#{message.from.username} - #{e.message}")
+      rescue StandardError => e
+        LeaverBot.logger.info(e.inspect)
       end
+    end
+
+    private
+
+    def before_action(message)
+      message.text = message.text.sub("@#{$bot_username}", '')
+      LeaverBot::User.get_and_update(message.from)
+      LeaverBot.logger.info("#{message.from.username} - #{message.text}" )
     end
   end
 end

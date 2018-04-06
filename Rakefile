@@ -6,6 +6,7 @@ require 'mongoid'
 require 'mongoid-locker'
 require 'telegram/bot'
 require 'dotenv/load'
+require 'logger'
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), 'lib')
 require 'leaver_bot'

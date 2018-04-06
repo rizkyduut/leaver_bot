@@ -8,7 +8,7 @@ module LeaverBot
       end
 
       def perform
-        puts raw_text
+        # do nothing]
       end
     end
   end
