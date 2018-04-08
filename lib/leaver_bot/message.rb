@@ -9,7 +9,7 @@ module LeaverBot
         msg << ''
         msg << 'Setelah itu, daftarkan anggota group yang diinginkan dengan:'
         msg << "<code>/add @[username (boleh lebih dari satu)] [nama group]</code>"
-        msg << "Contoh: <b>/add @rizkyduut @tuudykzir teltub</b>."
+        msg << "Contoh: <b>/add_user @rizkyduut @tuudykzir teltub</b>."
         msg << ''
         msg << 'Untuk melihat siapa saja yang tidak hadir dapat menggunakan /status di dalam group tersebut'
         msg << ''

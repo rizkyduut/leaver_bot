@@ -45,7 +45,11 @@ module LeaverBot
 
       def days_valid?(type)
         if days <= 0
-          reply(LeaverBot::Message.leave_text(type))
+          if type == 'reset'
+            reply(LeaverBot::Message.reset_text)
+          else
+            reply(LeaverBot::Message.leave_text(type))
+          end
           false
         else
           true
