@@ -9,7 +9,7 @@ module LeaverBot
         end
 
         def perform
-          super('Reset')
+          super('reset')
         end
       end
     end
