@@ -41,6 +41,7 @@ module LeaverBot
         if user && !LeaverBot::Leave.check_leave(username)
           options[:chat_id] = user.user_id
 
+          @log.info("Send reminder to #{username}")
           LeaverBot::MessageSender.perform_async(bot, options)
         end
       end
