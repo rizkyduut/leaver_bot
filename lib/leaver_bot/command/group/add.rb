@@ -11,6 +11,7 @@ module LeaverBot
         def perform
           super
 
+          raise LeaverBot::GroupNameMissingError if group_name.blank?
           LeaverBot::Group.create!(group_id: @message.chat.id, name: group_name, admin: @message.from.id)
           reply('Group ini berhasil didaftarkan dalam sistem')
         rescue Mongoid::Errors::Validations

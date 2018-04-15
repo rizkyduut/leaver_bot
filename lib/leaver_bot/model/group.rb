@@ -10,7 +10,7 @@ module LeaverBot
     field :user_list,   type: Array, default: []
 
     validates :group_id, uniqueness: true
-    validates :name, uniqueness: true, case_sensitive: false
+    validates :name, presence: true, uniqueness: true, case_sensitive: false
 
     index({ created_at: 1 }, { background: true })
     index({ group_id: 1 }, { background: true })
