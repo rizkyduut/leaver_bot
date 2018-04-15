@@ -11,6 +11,7 @@ require 'leaver_bot/command/sudo/delete'
 
 require 'leaver_bot/command/group'
 require 'leaver_bot/command/group/add'
+require 'leaver_bot/command/group/delete'
 
 require 'leaver_bot/command/user'
 require 'leaver_bot/command/user/add'
@@ -33,7 +34,7 @@ module LeaverBot
     def self.actions
       [
         Sudo::Keys, Sudo::Cache, Sudo::CacheType, Sudo::Holiday, Sudo::Delete,
-        Group::Add,
+        Group::Add, Group::Delete,
         User::Add,
         Snack::Add,
         Status::Leave, Status::Snack,

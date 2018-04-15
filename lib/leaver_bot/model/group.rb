@@ -5,19 +5,20 @@ module LeaverBot
     include Mongoid::Locker
 
     field :group_id,    type: Integer
-    field :name,  type: String
+    field :name,        type: String
+    field :admin,       type: Integer
     field :user_list,   type: Array, default: []
 
     validates :group_id, uniqueness: true
     validates :name, uniqueness: true, case_sensitive: false
 
     index({ created_at: 1 }, { background: true })
-    index({ group_id: 1 },    { background: true })
-    index({ name: 1 },   { background: true })
+    index({ group_id: 1 }, { background: true })
+    index({ name: 1 }, { background: true })
 
     default_scope -> { order_by(created_at: :asc) }
 
-    has_one :snack, class_name: "LeaverBot::Snack", inverse_of: :group
+    has_one :snack, class_name: "LeaverBot::Snack", inverse_of: :group, dependent: :destroy
 
     def self.update_group(old_username, new_username)
       return if old_username.eql?(new_username)
@@ -28,6 +29,10 @@ module LeaverBot
           group.save if group.changed?
         end
       end
+    end
+
+    def validate_admin(user_id)
+      self.admin == user_id
     end
   end
 end

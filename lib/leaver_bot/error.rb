@@ -2,7 +2,7 @@ module LeaverBot
   class Error < RuntimeError; end
 
   class PrivilegeError < Error
-    def initialize(msg = 'Kamu tidak berhak mengakses menu ini')
+    def initialize(msg = 'Kamu tidak berhak menggunakan perintah ini')
       super
     end
   end
@@ -13,8 +13,9 @@ module LeaverBot
     end
   end
 
-  class GroutpNotFoundError < Error
+  class GroupNotFoundError < Error
     def initialize(msg = 'Group tidak ditemukan')
+      super
     end
   end
 

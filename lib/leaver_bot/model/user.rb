@@ -39,5 +39,9 @@ module LeaverBot
 
       res
     end
+
+    def self.remove_group(username, group_name)
+      self.active.where(username: username).pull(group_list: group_name)
+    end
   end
 end

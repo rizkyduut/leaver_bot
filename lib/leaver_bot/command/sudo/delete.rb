@@ -2,7 +2,7 @@ module LeaverBot
   class Command
     class Sudo
       class Delete < Sudo
-        COMMAND_REGEX = /^\/delete/
+        COMMAND_REGEX = /^\/purge/
 
         def self.matches(text)
           text =~ COMMAND_REGEX
