@@ -10,7 +10,6 @@ module LeaverBot
 
         def perform
           super
-          return unless @group
 
           usernames = group.snack.today
           replies = []

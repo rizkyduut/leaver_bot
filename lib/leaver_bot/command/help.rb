@@ -8,11 +8,9 @@ module LeaverBot
       end
 
       def perform
-        if in_private?
-          reply(LeaverBot::Message.help_text)
-        else
-          reply('Japri aja ya')
-        end
+        raise LeaverBot::InGroupError unless in_private?
+
+        reply(LeaverBot::Message.help_text)
       end
     end
   end

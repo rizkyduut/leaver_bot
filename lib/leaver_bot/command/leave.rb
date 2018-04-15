@@ -14,10 +14,10 @@ module LeaverBot
 
             type == 'reset' ? remove_leave : add_leave(type)
           else
-            reply('Kamu belum terdaftar')
+            raise LeaverBot::UserNotRegisteredError
           end
         else
-          reply('Japri aja ya')
+          raise LeaverBot::InGroupError
         end
       end
 

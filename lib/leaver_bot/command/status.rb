@@ -7,13 +7,13 @@ module LeaverBot
 
       def perform
         if in_private?
-          reply('Perintah ini hanya bisa digunakan di dalam group')
+          raise LeaverBot::InPrivateError
         elsif holiday?
-          reply('Liburan gih sana')
+          raise LeaverBot::InHolidayError
         else
           @group = get_group
 
-          reply('Group ini belum didaftarkan') unless @group
+          raise LeaverBot::GroupNotRegisteredError unless @group
         end
       end
 

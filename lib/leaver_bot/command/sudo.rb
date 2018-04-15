@@ -6,6 +6,7 @@ module LeaverBot
       end
 
       def perform
+        raise LeaverBot::InGroupError if !in_private?
         raise LeaverBot::PrivilegeError unless super_admin?
       end
 

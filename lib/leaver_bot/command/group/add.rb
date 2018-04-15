@@ -10,12 +10,10 @@ module LeaverBot
 
         def perform
           super
-          return unless @message.chat.id < 0
 
-          group_name = args
-          LeaverBot::Group.create!(group_id: @message.chat.id, name: group_name)
+          LeaverBot::Group.create!(group_id: @message.chat.id, name: group_name, admin: @message.from.id)
           reply('Group ini berhasil didaftarkan dalam sistem')
-        rescue
+        rescue Mongoid::Errors::Validations
           reply('Group ini sudah terdaftar sebelumnya')
         end
       end

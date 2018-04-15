@@ -10,7 +10,6 @@ module LeaverBot
 
         def perform
           super
-          return unless @group
 
           if usernames = @group.user_list
             replies = []
