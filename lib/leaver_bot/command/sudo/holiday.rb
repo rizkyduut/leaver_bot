@@ -13,7 +13,7 @@ module LeaverBot
           super
 
           $redis.set(HOLIDAY_KEY, args)
-          reply(state == 'y' ? 'Libur' : 'Masuk')
+          reply(args == 'y' ? 'Libur' : 'Masuk')
         end
       end
     end
