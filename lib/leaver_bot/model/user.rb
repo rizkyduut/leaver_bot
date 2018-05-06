@@ -9,7 +9,6 @@ module LeaverBot
     field :last_name,   type: String
     field :username,    type: String
     field :active,      type: Boolean, default: true
-    field :group_list,  type: Array, default: []
 
     index({ created_at: 1 }, { background: true })
     index({ user_id: 1 },    { background: true })
@@ -38,10 +37,6 @@ module LeaverBot
       end
 
       res
-    end
-
-    def self.remove_group(username, group_name)
-      self.active.where(username: username).pull(group_list: group_name)
     end
   end
 end

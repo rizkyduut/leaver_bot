@@ -14,9 +14,6 @@ module LeaverBot
           group = LeaverBot::Group.find_by(group_id: @message.chat.id)
           raise LeaverBot::PrivilegeError unless group.validate_admin(@message.from.id)
 
-          group.user_list.each do |username|
-            LeaverBot::User.remove_group(username, group.name)
-          end
           group.destroy
 
           reply("Group #{group.name} berhasil dihapus dari sistem")

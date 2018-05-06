@@ -24,14 +24,13 @@ module LeaverBot
         end
 
         def register_user(username, group)
-          if LeaverBot::User.where(username: /^#{username}$/i, group_list: group.name).first
+          if group.user_list.include?(username)
             "Sudah terdaftar di group #{group.name} sebelumnya"
           elsif user = LeaverBot::User.where(username: /^#{username}$/i).first
-            user.add_to_set(group_list: group.name)
             group.add_to_set(user_list: username)
             'Berhasil didaftarkan ke dalam group'
           else
-            new_user = LeaverBot::User.create!(username: username, group_list: [group.name])
+            new_user = LeaverBot::User.create!(username: username)
             group.add_to_set(user_list: username)
             'Berhasil didaftarkan dalam sistem'
           end
