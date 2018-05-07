@@ -21,6 +21,10 @@ module LeaverBot
     def initialize(msg = 'Kamu belum terdaftar ke dalam sistem'); super; end
   end
 
+  class UserNotRegisteredInGroupError < Error
+    def initialize(msg = 'Kamu belum terdaftar di group manapun'); super; end
+  end
+
   class InGroupError < Error
     def initialize(msg = 'Japri aja ya'); super; end
   end

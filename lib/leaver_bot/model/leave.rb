@@ -29,6 +29,31 @@ module LeaverBot
       $redis.hget(key, username)
     end
 
+    def self.check_status_by_month(group, month = Date.today.month)
+      duration = (Date.today.end_of_month - Date.today).to_i
+
+      results = []
+
+      duration.times do |d|
+        date = Date.today.next_day(d)
+        key = generate_key(date)
+
+        if $redis.exists(key)
+          temp = []
+          group.user_list.each do |username|
+            if $redis.hexists(key, username)
+              temp.push check_status(username, date)
+            end
+          end
+
+          temp.unshift("\n#{date.strftime('%d-%m-%Y')}\n==========") unless temp.empty?
+          results.concat temp
+        end
+      end
+
+      results
+    end
+
     def self.remove(username, duration, date = Date.today)
       duration.times do |d|
         key = generate_key(date.next_day(d))

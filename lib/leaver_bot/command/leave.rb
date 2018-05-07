@@ -4,7 +4,7 @@ module LeaverBot
       attr_accessor :days, :date
 
       def process_input
-        days, @date = /(\d)(?: (.+))?/.match(stripped_text).captures
+        days, @date = /(\d{1,2})(?: (.+))?/.match(stripped_text).captures
         @days = days.to_i
       end
 

@@ -29,6 +29,8 @@ require 'leaver_bot/command/leave/reset'
 require 'leaver_bot/command/snack'
 require 'leaver_bot/command/snack/add'
 
+require 'leaver_bot/command/monthly_status'
+
 module LeaverBot
   class Command
     def self.actions
@@ -40,7 +42,8 @@ module LeaverBot
         Status::Leave, Status::Snack,
         Leave::Cuti, Leave::Sick, Leave::Remote, Leave::Reset,
         Help, Reminder,
-        Dump
+        MonthlyStatus,
+        Dump,
       ]
     end
 
