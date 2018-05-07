@@ -2,9 +2,9 @@ module LeaverBot
   class Leave
     LEAVE_TYPE_KEY = 'leave_type'.freeze
 
-    def self.add(username, duration, type)
+    def self.add(username, duration, type, date = Date.today)
       duration.times do |d|
-        day      = Date.today.next_day(d)
+        day      = date.next_day(d)
         expireat = day.next_day(2).to_time.to_i # 2 days from leave day
         key      = generate_key(day)
 
@@ -29,9 +29,9 @@ module LeaverBot
       $redis.hget(key, username)
     end
 
-    def self.remove(username, duration)
+    def self.remove(username, duration, date = Date.today)
       duration.times do |d|
-        key = generate_key(Date.today.next_day(d))
+        key = generate_key(date.next_day(d))
 
         $redis.hdel(key, username)
       end
