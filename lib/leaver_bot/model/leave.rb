@@ -13,6 +13,24 @@ module LeaverBot
       end
     end
 
+    def self.my_status(username)
+      today = Date.today
+      end_of_month = today.end_of_month
+
+      result = []
+      (today..end_of_month).each do |dday|
+        key = generate_key(dday)
+
+        status = $redis.hget(key, username)
+
+        if $redis.hexists(key, username) && status
+          result << [key, status]
+        end
+      end
+
+      result
+    end
+
     def self.check_status(username, date = Date.today)
       key = generate_key(date)
 

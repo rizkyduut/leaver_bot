@@ -19,6 +19,9 @@ require 'leaver_bot/command/user/add'
 require 'leaver_bot/command/status'
 require 'leaver_bot/command/status/leave'
 require 'leaver_bot/command/status/snack'
+require 'leaver_bot/command/my_status'
+require 'leaver_bot/command/check_status'
+require 'leaver_bot/command/monthly_status'
 
 require 'leaver_bot/command/leave'
 require 'leaver_bot/command/leave/cuti'
@@ -28,8 +31,6 @@ require 'leaver_bot/command/leave/reset'
 
 require 'leaver_bot/command/snack'
 require 'leaver_bot/command/snack/add'
-
-require 'leaver_bot/command/monthly_status'
 
 module LeaverBot
   class Command
@@ -42,7 +43,7 @@ module LeaverBot
         Status::Leave, Status::Snack,
         Leave::Cuti, Leave::Sick, Leave::Remote, Leave::Reset,
         Help, Reminder,
-        MonthlyStatus,
+        MyStatus, CheckStatus, MonthlyStatus,
         Dump,
       ]
     end
