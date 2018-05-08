@@ -32,6 +32,9 @@ require 'leaver_bot/command/leave/reset'
 require 'leaver_bot/command/snack'
 require 'leaver_bot/command/snack/add'
 
+require 'leaver_bot/command/meeting'
+require 'leaver_bot/command/meeting/standup'
+
 module LeaverBot
   class Command
     def self.actions
@@ -39,9 +42,10 @@ module LeaverBot
         Sudo::Keys, Sudo::Cache, Sudo::CacheType, Sudo::Holiday, Sudo::Delete,
         Group::Add, Group::Delete,
         User::Add,
-        Snack::Add,
         Status::Leave, Status::Snack,
         Leave::Cuti, Leave::Sick, Leave::Remote, Leave::Reset,
+        Meeting::Standup,
+        Snack::Add,
         Help, Reminder,
         MyStatus, CheckStatus, MonthlyStatus,
         Dump,

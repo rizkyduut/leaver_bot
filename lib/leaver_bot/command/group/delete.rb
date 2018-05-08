@@ -16,7 +16,7 @@ module LeaverBot
 
           group.destroy
 
-          reply("Group #{group.name} berhasil dihapus dari sistem")
+          reply("Group #{group.name} berhasil dihapus dari Papan Absen")
         rescue NoMethodError
           raise LeaverBot::GroupNotRegisteredError
         end

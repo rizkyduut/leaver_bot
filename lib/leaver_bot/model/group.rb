@@ -7,6 +7,7 @@ module LeaverBot
     field :group_id,    type: Integer
     field :name,        type: String
     field :admin,       type: Integer
+    field :standup,     type: String
     field :user_list,   type: Array, default: []
 
     validates :group_id, uniqueness: true
@@ -33,6 +34,13 @@ module LeaverBot
 
     def validate_admin(user_id)
       self.admin == user_id
+    end
+
+    def self.standup_options
+      {
+        text: 'AYO ANAK-ANAK STAND UP YAAA',
+        parse_mode: 'HTML'
+      }
     end
   end
 end

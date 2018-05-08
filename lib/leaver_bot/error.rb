@@ -36,4 +36,8 @@ module LeaverBot
   class InHolidayError < Error
     def initialize(msg = 'Liburan gih sana'); super; end
   end
+
+  class TimeNotValidError < Error
+    def initialize(msg = 'Waktu yang dimasukkan tidak valid'); super; end
+  end
 end

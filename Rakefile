@@ -41,6 +41,11 @@ namespace :leaver_bot do
   task daily_snack: :reload do
     LeaverBot::daily_snack
   end
+
+  desc 'Send standup reminder'
+  task standup: :reload do
+    LeaverBot::standup
+  end
 end
 
 task default: 'leaver_bot:start'

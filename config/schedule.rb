@@ -19,10 +19,18 @@
 
 # Learn more: http://github.com/javan/whenever
 
+# update crontab use whenever -w
+# clear crontab use whenever -c
+
 every :weekday, at: '6am' do
   rake 'leaver_bot:remind'
 end
 
 every :weekday, at: ['8:00 am', '11:00 am'] do
   rake 'leaver_bot:daily_snack'
+end
+
+every '00,15,30,45 * * * 1-5' do
+# every '* * * * 1-5' do
+  rake 'leaver_bot:standup'
 end

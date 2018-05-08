@@ -72,6 +72,22 @@ module LeaverBot
     end
   end
 
+  def self.standup
+    return if $redis.get(HOLIDAY_KEY) == 'y'
+
+    Telegram::Bot::Client.run($telegram_bot_token) do |bot|
+      current_time = Time.now.strftime("%H:%M")
+
+      LeaverBot::Group.find_by(standup: current_time) do |group|
+        options = LeaverBot::Group.standup_options
+        options[:chat_id] = group.group_id
+
+        @log.info("Send standup reminder to #{group.name}")
+        LeaverBot::MessageSender.perform_async(bot, options)
+      end
+    end
+  end
+
   def self.logger
     @log
   end
