@@ -13,7 +13,7 @@ module LeaverBot
 
           raise LeaverBot::GroupNameMissingError if group_name.blank?
           LeaverBot::Group.create!(group_id: @message.chat.id, name: group_name, admin: @message.from.id)
-          reply('Group ini berhasil didaftarkan dalam sistem')
+          reply('Group ini berhasil didaftarkan ke Papan Absen')
         rescue Mongoid::Errors::Validations
           reply('Group ini sudah terdaftar sebelumnya')
         end

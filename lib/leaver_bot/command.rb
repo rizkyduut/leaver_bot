@@ -1,4 +1,5 @@
 require 'leaver_bot/command/help'
+require 'leaver_bot/command/help_commands'
 require 'leaver_bot/command/reminder'
 require 'leaver_bot/command/dump'
 
@@ -37,6 +38,10 @@ require 'leaver_bot/command/meeting/standup'
 
 module LeaverBot
   class Command
+    DATE_FORMAT = "%d %B %Y"
+
+    attr_accessor :bot, :message
+
     def self.actions
       [
         Sudo::Keys, Sudo::Cache, Sudo::CacheType, Sudo::Holiday, Sudo::Delete,
@@ -46,13 +51,11 @@ module LeaverBot
         Leave::Cuti, Leave::Sick, Leave::Remote, Leave::Reset,
         Meeting::Standup,
         Snack::Add,
-        Help, Reminder,
+        Help, HelpCommands, Reminder,
         MyStatus, CheckStatus, MonthlyStatus,
         Dump,
       ]
     end
-
-    attr_accessor :bot, :message
 
     def initialize(bot, message)
       @bot = bot
@@ -77,6 +80,10 @@ module LeaverBot
 
     def stripped_text
       raw_text.gsub(self.class::COMMAND_REGEX, '')
+    end
+
+    def display_date(date)
+      date.strftime(DATE_FORMAT)
     end
 
     def send_message(text)

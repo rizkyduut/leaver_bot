@@ -4,7 +4,10 @@ module LeaverBot
       attr_accessor :days, :date
 
       def process_input
-        days, @date = /(\d{1,2})(?: (.+))?/.match(stripped_text).captures
+        unless stripped_text.empty?
+          days, @date = /(\d{1,2})(?: (.+))?/.match(stripped_text).captures
+        end
+
         @days = days.to_i
       end
 
@@ -68,7 +71,7 @@ module LeaverBot
         if @days == 1
           reply("Data cuti/remote untuk tanggal #{display_date(date)} berhasil dihapus")
         else
-          reply("Data cuti/remote untuk tanggal #{date} sampai #{display_date(next_date(date))} berhasil dihapus")
+          reply("Data cuti/remote untuk tanggal #{display_date(date)} sampai #{display_date(next_date(date))} berhasil dihapus")
         end
       end
 
@@ -88,17 +91,13 @@ module LeaverBot
       end
 
       def valid_date?
-        !!(@date.match(/\d{2}-\d{1,2}-\d{4}/) && Date.strptime(@date, "%d-%m-%Y"))
+        !!(@date.match(/\d{1,2}-\d{1,2}-\d{4}/) && Date.strptime(@date, "%d-%m-%Y"))
       rescue ArgumentError
         false
       end
 
       def next_date(current_date)
-        current_date.next_day(@days)
-      end
-
-      def display_date(date)
-        date.strftime("%d-%m-%Y")
+        current_date.next_day(@days-1)
       end
     end
   end

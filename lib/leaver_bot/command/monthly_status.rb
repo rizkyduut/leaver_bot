@@ -31,12 +31,12 @@ module LeaverBot
       end
 
       def reply_status(results, group)
-        header = "#{group.name} - #{Date.today.month}/#{Date.today.year}"
+        header = "Absensi grup <b>#{group.name}</b> sampai akhir bulan #{Date.today.strftime("%B %Y")}"
         unless results.all?(&:nil?)
           results.unshift(header)
           reply(results.compact.join("\n"))
         else
-          reply("#{header}\nTidak ada yang cuti bulan ini. Yeay!")
+          reply("#{header}\nTidak ada yang absen bulan ini. Yeay!")
         end
       end
     end

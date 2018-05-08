@@ -1,7 +1,7 @@
 module LeaverBot
   class Command
-    class Help < Command
-      COMMAND_REGEX = /^\/help$/
+    class HelpCommands < Command
+      COMMAND_REGEX = /^\/help_commands$/
 
       def self.matches(text)
         text =~ COMMAND_REGEX
@@ -10,7 +10,7 @@ module LeaverBot
       def perform
         raise LeaverBot::InGroupError unless in_private?
 
-        reply(LeaverBot::Message.help_text)
+        reply(LeaverBot::Message.help_commands_text)
       end
     end
   end

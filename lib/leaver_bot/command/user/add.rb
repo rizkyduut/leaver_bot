@@ -32,7 +32,7 @@ module LeaverBot
           else
             new_user = LeaverBot::User.create!(username: username)
             group.add_to_set(user_list: username)
-            'Berhasil didaftarkan dalam sistem'
+            'Berhasil didaftarkan ke Papan Absen'
           end
         end
       end

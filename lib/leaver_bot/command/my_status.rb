@@ -13,7 +13,7 @@ module LeaverBot
             status = LeaverBot::Leave.my_status(@message.from.username)
 
             status = status.map do |stat|
-              date = Date.parse(stat[0]).strftime("%d %B %Y")
+              date = Date.parse(stat[0]).strftime(DATE_FORMAT)
               s = stat[1].titlecase
 
               "#{date} - #{s}"

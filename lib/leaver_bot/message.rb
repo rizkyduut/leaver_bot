@@ -8,43 +8,96 @@ module LeaverBot
         msg << "Contoh: <b>/add_group teltub</b>."
         msg << ''
         msg << 'Setelah itu, daftarkan anggota group yang diinginkan dengan:'
-        msg << "<code>/add @[username (boleh lebih dari satu)] [nama group]</code>"
+        msg << "<code>/add_user @[username (boleh lebih dari satu)] [nama group]</code>"
         msg << "Contoh: <b>/add_user @rizkyduut @tuudykzir teltub</b>."
         msg << ''
         msg << 'Untuk melihat siapa saja yang tidak hadir dapat menggunakan /status di dalam group tersebut'
         msg << ''
-        msg << 'Bagaimana cara input data ketidakhadirannya? Username yang telah didaftarkan tadi bisa langsung japri ke sini dengan /cuti /sakit /remote /reset /status'
+        msg << 'Bagaimana cara input data ketidakhadirannya? Username yang telah didaftarkan tadi bisa langsung japri ke sini dengan /cuti /sakit /remote /reset /my_status'
         msg << ''
         msg << 'Suka lupa input data? pake /reminder aja'
+        msg << ''
+        msg << "Untuk melihat daftar perintah lengkap, gunakan perintah /help_commands."
+        msg.join("\n")
+      end
+
+      def help_commands_text
+        msg = []
+        msg << "<b>Perintah di group chat</b>"
+        msg << "======================"
+        msg << "Gunakan <code>/add_group [nama grup]</code> untuk mendaftarkan grup ke papan absen."
+        msg << ''
+        msg << "Gunakan <code>/add_user @[username (boleh lebih dari satu)] [nama grup]</code> untuk mendaftarkan user ke dalam grup."
+        msg << ''
+        msg << "Gunakan /delete_group untuk menghapus grup dari Papan Absen."
+        msg << ''
+        msg << "Gunakan <code>/add_snack @[username (boleh lebih dari satu)] [nama grup] [hari (senin, selasa, etc.)]</code> untuk membuat pengingat piket jajan harian."
+        msg << ''
+        msg << "Gunakan <code>/set_standup [HH:MM (format 24 jam, menit kelipatan 15)]</code> untuk mengatur pengingat standup meeting harian"
+        msg << ""
+        msg << "Gunakan /snack untuk memeriksa jadwal piket jajan hari ini."
+        msg << ''
+        msg << "Gunakan /status untuk memeriksa absensi anggota grup hari ini."
+        msg << ""
+        msg << "<b>Perintah di private chat</b>"
+        msg << "========================"
+        msg << "Gunakan /cuti untuk mendaftarkan cuti kamu."
+        msg << ""
+        msg << "Gunakan /remote untuk mendaftarkan remote kamu."
+        msg << ""
+        msg << "Gunakan /sakit untuk mendaftarkan cuti sakit kamu."
+        msg << ""
+        msg << "Gunakan /reset untuk menghapus data cuti/sakit/remote kamu."
+        msg << ""
+        msg << "Gunakan /my_status untuk memeriksa data cuti kamu pada bulan ini."
+        msg << ""
+        msg << "Gunakan /monthly_status untuk melihat data cuti bulan ini dari grup-grup yang kamu ikuti."
+        msg << ""
+        msg << "Gunakan /check_status untuk mengetahui status cuti seseorang yang terdaftar di papan absen."
+        msg << ""
+        msg << "Gunakan /reminder untuk mengaktifkan/menonaktifkan pengingat untuk mendaftarkan cuti setiap hari."
+
         msg.join("\n")
       end
 
       def leave_text(type)
+        optional_date = " [tanggal mulai #{type} (opsional, format DD-MM-YYYY)]"
         msg = []
-        msg << "<code>/#{type} [jumlah hari terhitung hari ini]</code>"
-        msg << "Contoh: <b>/#{type} 1</b> untuk mendaftarkan data #{type} hari ini saja"
+        msg << "<code>/#{type} [jumlah hari terhitung hari ini]#{optional_date unless type == 'sakit'}</code>"
+        msg << ""
+        msg << "Contoh:"
+        msg << "<b>/#{type} 1</b> untuk mendaftarkan data #{type} hari ini saja"
+        msg << "<b>/#{type} 3 08-05-2018</b> untuk mendaftarkan #{type} sebanyak 3 hari mulai dari tanggal 8 Mei 2018 (sabtu minggu dihitung)" unless type == 'sakit'
         msg << "<b>/#{type} 6</b> untuk mendaftarkan data #{type} sebanyak 6 hari (sabtu minggu dihitung)"
         msg.join("\n")
       end
 
       def reset_text
         msg = []
-        msg << "<code>/reset [jumlah hari terhitung hari ini]</code>"
-        msg << 'Mirip sama leave/remote tapi ini menghapus <b>semua</b> data sebanyak jumlah hari ke depan'
-        msg.join("\n")
-      end
-
-      def status_text
-        msg = []
-        msg << 'COMING SOON'
+        msg << "<code>/reset [jumlah hari terhitung hari ini / tanggal awal] [tanggal awal (opsional, format DD-MM-YYYY)]</code>"
+        msg << ""
+        msg << 'Contoh:'
+        msg << "<b>/reset 3</b> menghapus data absensi kamu untuk 3 hari ke depan termasuk hari ini"
+        msg << "<b>/reset 3 08-05-2018</b> menghapus data absensi kamu sebanyak 3 hari mulai dari tanggal 8 Mei 2018"
         msg.join("\n")
       end
 
       def reminder_text
         msg = []
         msg << '<code>/reminder [y/n]</code>'
+        msg << ""
+        msg << "Contoh:"
         msg << "<b>/reminder y</b> untuk mengaktifkan fitur reminder yang akan dikirim setiap jam 6 pagi"
         msg << "<b>/reminder n</b> untuk menonaktifkan fitur reminder"
+        msg.join("\n")
+      end
+
+      def check_status_text
+        msg = []
+        msg << "<code>/check_status @[username]</code>"
+        msg << ""
+        msg << "Contoh:"
+        msg << "<b>/check_status @rizkyduut</b> memeriksa status absensi username @rizkyduut hari ini"
         msg.join("\n")
       end
     end
