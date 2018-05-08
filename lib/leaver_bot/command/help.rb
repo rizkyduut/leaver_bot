@@ -1,7 +1,7 @@
 module LeaverBot
   class Command
     class Help < Command
-      COMMAND_REGEX = /^\/help$/
+      COMMAND_REGEX = /^\/help$|\/start$/
 
       def self.matches(text)
         text =~ COMMAND_REGEX

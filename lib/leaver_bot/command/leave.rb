@@ -78,7 +78,7 @@ module LeaverBot
       private
 
       def valid_days?(type)
-        if @days <= 0
+        if @days <= 0 || @days > 30
           if type == 'reset'
             reply(LeaverBot::Message.reset_text)
           else

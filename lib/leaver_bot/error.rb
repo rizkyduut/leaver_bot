@@ -40,4 +40,8 @@ module LeaverBot
   class TimeNotValidError < Error
     def initialize(msg = 'Waktu yang dimasukkan tidak valid'); super; end
   end
+
+  class TimeNotAllowedError < Error
+    def initialize(msg = 'Waktu yang disupport hanya waktu dengan kelipatan 15 menit, contoh: (13:00, 13:15, 13:30, 13:45)'); super; end
+  end
 end
