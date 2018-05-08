@@ -51,7 +51,7 @@ module LeaverBot
         else
           LeaverBot::Leave.add(@message.from.username, @days, type.downcase, date)
 
-          reply("Data #{type} untuk tanggal #{display_date(date)} sampai #{display_date(next_date(date))}")
+          reply("Data #{type} untuk tanggal #{display_date(date)} sampai #{display_date(next_date(date))} berhasil didaftarkan")
         end
       end
 
