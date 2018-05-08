@@ -38,7 +38,7 @@ module LeaverBot
 
       leave_type = $redis.hget(key, username)
 
-      "#{leave_type == 'remote' ? "@" : ""}#{username} - #{leave_type}"
+      "#{leave_type == 'remote' ? "@" : ""}#{username} - #{leave_type.titlecase}"
     end
 
     def self.check_leave(username)

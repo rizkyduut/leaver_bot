@@ -14,11 +14,17 @@ module LeaverBot
 
             status = status.map do |stat|
               date = Date.parse(stat[0]).strftime("%d %B %Y")
-              s = stat[1].upcase
+              s = stat[1].titlecase
 
               "#{date} - #{s}"
             end
 
+            if status.empty?
+              status = ["Belum ada cuti yang kamu ajukan di bulan ini"]
+            end
+
+            month_year = Date.today.strftime("%B %Y")
+            status = status.unshift("Absensi kamu sampai akhir bulan #{month_year}")
             status = status.join("\n")
 
             reply(status)

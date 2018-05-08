@@ -11,7 +11,7 @@ module LeaverBot
         if in_private?
           if registered_user?
             username = stripped_text.strip.gsub("@","")
-            status = LeaverBot::Leave.check_status(username)
+            status = LeaverBot::Leave.check_status(username) || "@#{username} masuk kantor hari ini"
 
             reply(status)
           else
