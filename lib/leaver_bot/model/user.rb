@@ -38,5 +38,22 @@ module LeaverBot
 
       res
     end
+
+    def self.register_user(username, group)
+      if group.user_list.include?(username)
+        "Sudah terdaftar di group #{group.name} sebelumnya"
+      elsif self.where(username: /^#{username}$/i).first
+        group.add_to_set(user_list: username)
+        'Berhasil didaftarkan ke dalam group'
+      else
+        self.create!(username: username)
+        group.add_to_set(user_list: username)
+        'Berhasil didaftarkan ke Papan Absen'
+      end
+    end
+
+    def self.remove_user(username, group)
+      group.pull(user_list: username)
+    end
   end
 end
