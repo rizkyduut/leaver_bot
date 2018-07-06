@@ -23,13 +23,11 @@ module LeaverBot
         remove_user(bot, message)
       end
 
-=begin
     rescue LeaverBot::Error => e
       cmd.reply(e.message)
       LeaverBot.logger.error("#{message.from.username} - #{e.message}")
     rescue StandardError => e
       LeaverBot.logger.info(e.inspect)
-=end
     end
 
     private
