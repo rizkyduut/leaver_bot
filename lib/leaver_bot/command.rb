@@ -62,12 +62,18 @@ module LeaverBot
       @message = message
     end
 
+    def sender
+      return @message.chat.username if @message.from.is_bot
+
+      @message.from.username
+    end
+
     def in_private?
       @message.chat.type == 'private'
     end
 
     def registered_user?
-      LeaverBot::User.get(@message.from.username)
+      LeaverBot::User.get(sender)
     end
 
     def registered_group?(group_name)
@@ -86,8 +92,8 @@ module LeaverBot
       date.strftime(DATE_FORMAT)
     end
 
-    def send_message(text)
-      send(options(text))
+    def send_message(text, markup = {})
+      send(options(text).merge(markup))
     end
 
     def reply(text)

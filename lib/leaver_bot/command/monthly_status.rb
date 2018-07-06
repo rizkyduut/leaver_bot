@@ -9,8 +9,7 @@ module LeaverBot
 
       def perform
         raise LeaverBot::InGroupError unless in_private?
-        username = @message.from.username
-        groups = get_group_by_username(username)
+        groups = get_group_by_username(sender)
 
         raise LeaverBot::UserNotRegisteredInGroupError unless groups
 

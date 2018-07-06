@@ -18,8 +18,6 @@ module LeaverBot
   def self.perform
     Telegram::Bot::Client.run($telegram_bot_token) do |bot|
       bot.listen do |message|
-        add_new_user(bot, message)
-        remove_user(bot, message)
         LeaverBot::Input.perform_async(bot, message)
       end
     end
@@ -92,47 +90,5 @@ module LeaverBot
 
   def self.logger
     @log
-  end
-
-  private
-
-
-  def self.add_new_user(bot, message)
-    return if message.new_chat_members.empty?
-
-    message.new_chat_members.each do |user|
-      unless user.is_bot
-        if group = LeaverBot::Group.find_by(group_id: message.chat.id)
-          LeaverBot::User.register_user(user.username, group)
-
-          options = {
-              text: "Hai @#{user.username}, Kamu sudah diinput ke Papan Absen ya!",
-              parse_mode: 'HTML',
-              chat_id: message.chat.id
-          }
-
-          @log.info("Send greetings message to @#{user.username}")
-          LeaverBot::MessageSender.perform_async(bot, options)
-        end
-      end
-    end
-  end
-
-  def self.remove_user(bot, message)
-    return if message.left_chat_member.nil?
-
-    user = message.left_chat_member
-    if group = LeaverBot::Group.find_by(group_id: message.chat.id)
-      LeaverBot::User.remove_user(user.username, group)
-
-      options = {
-          text: "@#{user.username} telah dihapus dari Papan Absen",
-          parse_mode: 'HTML',
-          chat_id: message.chat.id
-      }
-
-      @log.info("Send goodbye message to @#{user.username}")
-      LeaverBot::MessageSender.perform_async(bot, options)
-    end
   end
 end

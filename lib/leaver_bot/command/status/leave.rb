@@ -9,6 +9,11 @@ module LeaverBot
         end
 
         def perform
+          if in_private?
+            ask_status
+            return
+          end
+
           super
 
           if usernames = @group.user_list
@@ -36,6 +41,16 @@ module LeaverBot
           else
             reply('Semua hadir hari ini. Yeay!')
           end
+        end
+
+        def ask_status
+          kb = [
+              Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Status kamu', callback_data: '/my_status'),
+              Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Status grup kamu', callback_data: '/monthly_status'),
+          ]
+          markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
+
+          send_message('Yang mana?', {reply_markup: markup})
         end
       end
     end
