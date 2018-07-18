@@ -9,6 +9,7 @@ gem 'mongoid-locker'
 gem 'telegram-bot-ruby'
 gem 'whenever', require: false
 gem 'dotenv'
+gem 'i18n'
 
 group :test do
   gem 'factory_bot'

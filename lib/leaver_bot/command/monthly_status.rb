@@ -31,7 +31,7 @@ module LeaverBot
       end
 
       def reply_status(results, group)
-        header = "Absensi grup <b>#{group.name}</b> sampai akhir bulan #{Date.today.strftime("%B %Y")}"
+        header = "Absensi grup <b>#{group.name}</b> sampai akhir bulan #{I18n.l(Date.today, format: :month_year)}"
         unless results.all?(&:nil?)
           results.unshift(header)
           reply(results.compact.join("\n"))

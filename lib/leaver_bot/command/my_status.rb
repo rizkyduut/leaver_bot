@@ -13,7 +13,7 @@ module LeaverBot
             status = LeaverBot::Leave.my_status(@message.from.username)
 
             status = status.map do |stat|
-              date = Date.parse(stat[0]).strftime(DATE_FORMAT)
+              date = I18n.l(Date.parse(stat[0]), format: :long)
               s = stat[1].titlecase
 
               "#{date} - #{s}"
@@ -23,7 +23,7 @@ module LeaverBot
               status = ["Belum ada cuti yang kamu ajukan di bulan ini"]
             end
 
-            month_year = Date.today.strftime("%B %Y")
+            month_year = I18n.l(Date.today, format: :month_year)
             status = status.unshift("Absensi kamu sampai akhir bulan #{month_year}")
             status = status.join("\n")
 

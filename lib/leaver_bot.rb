@@ -96,7 +96,6 @@ module LeaverBot
 
   private
 
-
   def self.add_new_user(bot, message)
     return if message.new_chat_members.empty?
 
