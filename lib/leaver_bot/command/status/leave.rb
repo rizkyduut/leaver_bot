@@ -36,7 +36,7 @@ module LeaverBot
 
         def reply_status(replies)
           unless replies.all?(&:nil?)
-            replies.unshift('Berikut daftar yang tidak hadir hari ini:')
+            replies.unshift("Daftar absensi <b>#{@group.name}</b> hari ini:")
             reply(replies.compact.join("\n"))
           else
             reply('Semua hadir hari ini. Yeay!')

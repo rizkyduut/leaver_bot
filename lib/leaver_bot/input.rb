@@ -4,6 +4,8 @@ module LeaverBot
     workers 5
 
     def perform(bot, message)
+      I18n.locale = :id
+
       if message.kind_of?(Telegram::Bot::Types::CallbackQuery)
         cmd = Command
                   .actions
@@ -33,8 +35,6 @@ module LeaverBot
     private
 
     def before_action(message)
-      I18n.locale = :id
-
       message.text = message.text.sub("@#{$bot_username}", '')
       LeaverBot::User.get_and_update(message.from)
       LeaverBot.logger.info("#{message.from.username} - #{message.text}")

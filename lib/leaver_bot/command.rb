@@ -61,9 +61,7 @@ module LeaverBot
     end
 
     def sender
-      return @message.chat.username if @message.from.is_bot
-
-      @message.from.username
+      @message.from.is_bot ? @message.chat.username : @message.from.username
     end
 
     def in_private?

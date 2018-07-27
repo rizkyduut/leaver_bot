@@ -10,7 +10,7 @@ module LeaverBot
       def perform
         if in_private?
           if registered_user?
-            status = LeaverBot::Leave.my_status(@message.from.username)
+            status = LeaverBot::Leave.my_status(sender)
 
             status = status.map do |stat|
               date = I18n.l(Date.parse(stat[0]), format: :long)
@@ -24,7 +24,7 @@ module LeaverBot
             end
 
             month_year = I18n.l(Date.today, format: :month_year)
-            status = status.unshift("Absensi kamu sampai akhir bulan #{month_year}")
+            status = status.unshift("Absensi kamu sampai akhir bulan #{month_year}:")
             status = status.join("\n")
 
             reply(status)
