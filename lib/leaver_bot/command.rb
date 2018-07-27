@@ -18,6 +18,7 @@ require 'leaver_bot/command/user'
 require 'leaver_bot/command/user/add'
 
 require 'leaver_bot/command/status'
+require 'leaver_bot/command/status/info'
 require 'leaver_bot/command/status/leave'
 require 'leaver_bot/command/status/snack'
 require 'leaver_bot/command/my_status'
@@ -45,7 +46,7 @@ module LeaverBot
         Sudo::Keys, Sudo::Cache, Sudo::CacheType, Sudo::Holiday, Sudo::Delete,
         Group::Add, Group::Delete,
         User::Add,
-        Status::Leave, Status::Snack,
+        Status::Info, Status::Leave, Status::Snack,
         Leave::Cuti, Leave::Sick, Leave::Remote, Leave::Reset,
         Meeting::Standup,
         Snack::Add,
