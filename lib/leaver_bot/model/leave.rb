@@ -64,7 +64,7 @@ module LeaverBot
             end
           end
 
-          temp.unshift("\n#{date.strftime("%A, %d %B %Y")}\n==========") unless temp.empty?
+          temp.unshift("\n#{I18n.l(date, format: :long)}\n==========") unless temp.empty?
           results.concat temp
         end
       end

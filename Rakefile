@@ -7,12 +7,13 @@ require 'mongoid-locker'
 require 'telegram/bot'
 require 'dotenv/load'
 require 'logger'
+require 'i18n'
 
 $LOAD_PATH << File.join(File.dirname(__FILE__), 'lib')
 require 'leaver_bot'
 
-
 Dir[File.dirname(__FILE__) + '/lib/tasks/*.rake'].each{ |file| import file }
+I18n.load_path = Dir[File.dirname(__FILE__) + '/config/locales/*.yml']
 
 def reload!
   Dir[File.dirname(__FILE__) + '/config/init.rb'].each{ |file| require file }

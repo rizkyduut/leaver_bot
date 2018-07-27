@@ -38,8 +38,6 @@ require 'leaver_bot/command/meeting/standup'
 
 module LeaverBot
   class Command
-    DATE_FORMAT = "%d %B %Y"
-
     attr_accessor :bot, :message
 
     def self.actions
@@ -89,7 +87,7 @@ module LeaverBot
     end
 
     def display_date(date)
-      date.strftime(DATE_FORMAT)
+      I18n.l(date, format: :default)
     end
 
     def send_message(text, markup = {})
