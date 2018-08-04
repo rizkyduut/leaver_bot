@@ -38,7 +38,7 @@ module LeaverBot
 
     def self.standup_options
       {
-        text: 'AYO ANAK-ANAK STAND UP YAAA',
+        text: 'AYO ANAK-ANAK STAND-UP YAAA',
         parse_mode: 'HTML'
       }
     end
