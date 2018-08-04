@@ -16,7 +16,7 @@ module LeaverBot
 
           super
 
-          if usernames = @group.user_list
+          if usernames = group.user_list
             replies = []
             usernames.each do |username|
               replies.push(check_status(username))
@@ -36,7 +36,7 @@ module LeaverBot
 
         def reply_status(replies)
           unless replies.all?(&:nil?)
-            replies.unshift("Daftar absensi <b>#{@group.name}</b> hari ini:")
+            replies.unshift("Daftar absensi <b>#{group.name}</b> hari ini:")
             reply(replies.compact.join("\n"))
           else
             reply('Semua hadir hari ini. Yeay!')

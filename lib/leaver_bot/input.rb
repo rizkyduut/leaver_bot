@@ -12,6 +12,12 @@ module LeaverBot
                   .find { |command| command.matches(message.data) }
                   .new(bot, message.message)
         cmd.perform
+      elsif message.reply_to_message
+        cmd = Command
+                  .actions
+                  .find { |command| command.matches(message.reply_to_message.text) }
+                  .new(bot, message)
+        cmd.perform
       elsif message.text
         return if message.edit_date
         before_action(message)

@@ -36,6 +36,8 @@ require 'leaver_bot/command/snack/add'
 
 require 'leaver_bot/command/meeting'
 require 'leaver_bot/command/meeting/standup'
+require 'leaver_bot/command/meeting/set_standup'
+require 'leaver_bot/command/meeting/skip_standup'
 
 module LeaverBot
   class Command
@@ -48,7 +50,7 @@ module LeaverBot
         User::Add,
         Status::Info, Status::Leave, Status::Snack,
         Leave::Cuti, Leave::Sick, Leave::Remote, Leave::Reset,
-        Meeting::Standup,
+        Meeting::Standup, Meeting::SetStandup, Meeting::SkipStandup,
         Snack::Add,
         Help, HelpCommands, Reminder,
         MyStatus, CheckStatus, MonthlyStatus,
@@ -93,8 +95,12 @@ module LeaverBot
       send(options(text).merge(markup))
     end
 
-    def reply(text)
-      send(options_with_reply(text))
+    def reply(text, markup = {})
+      send(options_with_reply(text).merge(markup))
+    end
+
+    def force_reply_markup
+      Telegram::Bot::Types::ForceReply.new(force_reply: true)
     end
 
     private

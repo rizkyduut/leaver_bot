@@ -33,10 +33,8 @@ module LeaverBot
         msg << ''
         msg << "Gunakan <code>/add_snack @[username (boleh lebih dari satu)] [nama grup] [hari (senin, selasa, etc.)]</code> untuk membuat pengingat piket jajan harian."
         msg << ''
-        msg << "Gunakan <code>/set_standup [HH:MM (format 24 jam, menit kelipatan 15)]</code> untuk mengatur pengingat standup meeting harian"
+        msg << "Gunakan /standup untuk mengatur pengingat stand-up meeting harian"
         msg << ""
-        msg << "Gunakan /snack untuk memeriksa jadwal piket jajan hari ini."
-        msg << ''
         msg << "Gunakan /status untuk memeriksa absensi anggota grup hari ini."
         msg << ""
         msg << "<b>Perintah di private chat</b>"
@@ -49,11 +47,9 @@ module LeaverBot
         msg << ""
         msg << "Gunakan /reset untuk menghapus data cuti/sakit/remote kamu."
         msg << ""
-        msg << "Gunakan /my_status untuk memeriksa data cuti kamu pada bulan ini."
+        msg << "Gunakan /status untuk memeriksa data cuti kamu atau grup yang kamu ikuti pada bulan ini."
         msg << ""
-        msg << "Gunakan /monthly_status untuk melihat data cuti bulan ini dari grup-grup yang kamu ikuti."
-        msg << ""
-        msg << "Gunakan /check_status untuk mengetahui status cuti seseorang yang terdaftar di papan absen."
+        msg << "Gunakan /check_status untuk mengetahui status cuti seseorang yang terdaftar di Papan Absen."
         msg << ""
         msg << "Gunakan /reminder untuk mengaktifkan/menonaktifkan pengingat untuk mendaftarkan cuti setiap hari."
 

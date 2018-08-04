@@ -5,15 +5,17 @@ module LeaverBot
 
       attr_accessor :group
 
+      def group
+        @group ||= LeaverBot::Group.find_by(group_id: @message.chat.id)
+      end
+
       def perform
         if in_private?
           raise LeaverBot::InPrivateError
         elsif holiday?
           raise LeaverBot::InHolidayError
         else
-          @group = get_group
-
-          raise LeaverBot::GroupNotRegisteredError unless @group
+          raise LeaverBot::GroupNotRegisteredError unless group
         end
       end
 
@@ -21,11 +23,6 @@ module LeaverBot
         Date.today.saturday? || Date.today.sunday? || $redis.get(HOLIDAY_KEY) == 'y'
       end
 
-      private
-
-      def get_group
-        LeaverBot::Group.find_by(group_id: @message.chat.id)
-      end
     end
   end
 end
