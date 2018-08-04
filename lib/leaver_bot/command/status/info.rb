@@ -25,7 +25,7 @@ module LeaverBot
         end
 
         def standup_time
-          @group&.standup || 'Belum diset'
+          @group&.standup || 'Belum diatur'
         end
       end
     end
