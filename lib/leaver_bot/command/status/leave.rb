@@ -2,7 +2,7 @@ module LeaverBot
   class Command
     class Status
       class Leave < Status
-        COMMAND_REGEX = /^\/status/
+        COMMAND_REGEX = /^\/status$/
 
         def self.matches(text)
           text =~ COMMAND_REGEX

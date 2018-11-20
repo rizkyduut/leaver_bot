@@ -20,7 +20,7 @@ module LeaverBot
             end
 
             if status.empty?
-              status = ["Belum ada cuti yang kamu ajukan di bulan ini"]
+              status = ["Belum ada absen yang kamu ajukan di bulan ini"]
             end
 
             month_year = I18n.l(Date.today, format: :month_year)

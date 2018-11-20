@@ -19,7 +19,7 @@ module LeaverBot
         def ask_standup
           kb = [
               Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Waktu stand-up', callback_data: '/set_standup'),
-              Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Skip hari', callback_data: '/skip_standup'),
+              #Telegram::Bot::Types::InlineKeyboardButton.new(text: 'Skip hari', callback_data: '/skip_standup'),
           ]
           markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
 
