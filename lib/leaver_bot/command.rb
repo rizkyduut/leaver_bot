@@ -28,6 +28,7 @@ require 'leaver_bot/command/leave'
 require 'leaver_bot/command/leave/cuti'
 require 'leaver_bot/command/leave/sick'
 require 'leaver_bot/command/leave/remote'
+require 'leaver_bot/command/leave/dinas'
 require 'leaver_bot/command/leave/reset'
 
 require 'leaver_bot/command/snack'
@@ -46,7 +47,7 @@ module LeaverBot
         Group::Add, Group::Delete,
         User::Add,
         Status::Leave, Status::Snack,
-        Leave::Cuti, Leave::Sick, Leave::Remote, Leave::Reset,
+        Leave::Cuti, Leave::Sick, Leave::Remote, Leave::Dinas, Leave::Reset,
         Meeting::Standup,
         Snack::Add,
         Help, HelpCommands, Reminder,

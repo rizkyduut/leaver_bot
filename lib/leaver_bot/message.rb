@@ -13,7 +13,7 @@ module LeaverBot
         msg << ''
         msg << 'Untuk melihat siapa saja yang tidak hadir dapat menggunakan /status di dalam group tersebut'
         msg << ''
-        msg << 'Bagaimana cara input data ketidakhadirannya? Username yang telah didaftarkan tadi bisa langsung japri ke sini dengan /cuti /sakit /remote /reset /my_status'
+        msg << 'Bagaimana cara input data ketidakhadirannya? Username yang telah didaftarkan tadi bisa langsung japri ke sini dengan /cuti /sakit /remote /dinas /reset /my_status'
         msg << ''
         msg << 'Suka lupa input data? pake /reminder aja'
         msg << ''
@@ -46,6 +46,8 @@ module LeaverBot
         msg << "Gunakan /remote untuk mendaftarkan remote kamu."
         msg << ""
         msg << "Gunakan /sakit untuk mendaftarkan cuti sakit kamu."
+        msg << ""
+        msg << "Gunakan /dinas untuk mendaftarkan dinas kamu."
         msg << ""
         msg << "Gunakan /reset untuk menghapus data cuti/sakit/remote kamu."
         msg << ""
