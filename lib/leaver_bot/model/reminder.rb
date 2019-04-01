@@ -16,8 +16,9 @@ module LeaverBot
     end
 
     def self.options
+      commands = %w(cuti remote sakit dinas reset)
       {
-        text: 'Hai, hari ini masuk gak? kalo nggak kabarin ya~',
+        text: "Hai, hari ini masuk gak? kalo nggak kabarin ya~\n\n#{commands.map { |command| "/#{command}" }.join("\n")}",
         parse_mode: 'HTML'
       }
     end
