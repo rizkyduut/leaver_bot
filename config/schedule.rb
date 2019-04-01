@@ -30,7 +30,7 @@ every :weekday, at: ['8:00 am', '11:00 am'] do
   rake 'leaver_bot:daily_snack'
 end
 
-every '00,15,30,45 * * * 1-5' do
+every '00,15,30,45 7-20 * * 1-5' do
 # every '* * * * 1-5' do
   rake 'leaver_bot:standup'
 end
